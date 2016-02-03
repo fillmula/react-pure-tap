@@ -8,14 +8,16 @@ export default class PureTap extends React.Component {
     className: React.PropTypes.string.isRequired,
     style: React.PropTypes.object.isRequired,
     action: React.PropTypes.func,
-    direction: React.PropTypes.string
+    direction: React.PropTypes.string,
+    stopPropagation: React.PropTypes.bool
   };
 
   static defaultProps = {
     component: 'span',
     className: 'pure-tap',
     style: {},
-    direction: 'vertical'
+    direction: 'vertical',
+    stopPropagation: true
   };
 
   constructor(props, context) {
@@ -61,9 +63,15 @@ export default class PureTap extends React.Component {
           this.shouldTriggerAction = true;
           this.setState({on: true});
           this.point = [event.touches[0].clientX, event.touches[0].clientY];
+          if (this.props.stopPropagation) {
+            event.stopPropagation();
+          }
         },
         onTouchMove: event => {
           if (!this.shouldTriggerAction) return;
+          if (this.props.stopPropagation) {
+            event.stopPropagation();
+          }
           if (this.props.direction === 'vertical') {
             if (event.touches[0].clientY !== this.point[1]) {
               this.shouldTriggerAction = false;
@@ -81,6 +89,9 @@ export default class PureTap extends React.Component {
         onTouchEnd: event => {
           if (this.shouldTriggerAction) {
             this.props.action && this.props.action();
+          }
+          if (this.props.stopPropagation) {
+            event.stopPropagation();
           }
           this.shouldTriggerAction = false;
           this.setState({on: false});
