@@ -1,0 +1,18 @@
+.pure-tap {
+  color: #007aff;
+  background-color: white;
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
+  -webkit-touch-callout:none;
+  -webkit-user-select:none;
+  -khtml-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out 0s;
+}
+
+.pure-tap.on {
+  background-color: gray;
+  transition: none !important;
+}
