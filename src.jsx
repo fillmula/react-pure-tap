@@ -84,6 +84,12 @@ export default class PureTap extends React.Component {
               this.setState({on: false});
               this.point = null;
             }
+          } else if (this.props.direction === 'none') {
+            if (event.touches[0].clientX !== this.point[0] || event.touches[0].clientY !== this.point[1]) {
+              this.shouldTriggerAction = false;
+              this.setState({on: false});
+              this.point = null;
+            }
           }
         },
         onTouchEnd: event => {
