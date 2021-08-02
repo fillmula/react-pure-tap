@@ -88,7 +88,7 @@ const PureTap: FC<PureTapProps> = ({
             }
           }
     }
-    const props = { style, className, ...handlers() }
+    const props = { style, className: `${className}${isOn ? ' __pure-tap-on' : ''}`, ...handlers() }
     return createElement(component, props, children)
 }
 
