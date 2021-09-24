@@ -1,6 +1,6 @@
 {
     "name": "react-pure-tap",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "description": "React pure tap",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
@@ -10,7 +10,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/victorteokw/react-pure-tap.git"
+        "url": "git+https://github.com/fillmula/react-pure-tap.git"
     },
     "keywords": [
         "button",
@@ -22,9 +22,9 @@
     "author": "Victor Teo <victor.teo@fillmula.com>",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/victorteokw/react-pure-tap/issues"
+        "url": "https://github.com/fillmula/react-pure-tap/issues"
     },
-    "homepage": "https://github.com/victorteokw/react-pure-tap#readme",
+    "homepage": "https://github.com/fillmula/react-pure-tap#readme",
     "peerDependencies": {
         "react": "^17.0.2"
     },
