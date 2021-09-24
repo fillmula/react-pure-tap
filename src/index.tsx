@@ -22,16 +22,13 @@ const PureTap: FC<PureTapProps> = ({
     direction = 'vertical'
 }) => {
     const [isOn, setIsOn] = useState(false)
-    const [mouseDown, setMouseDown] = useState(false)
-    const [shouldTriggerAction, setShouldTriggerAction] = useState(false)
     const pointRef = useRef<number[] | null>(null)
+    const shouldTriggerActionRef = useRef<boolean>(false)
     useEffect(() => {
         let windowMouseUp: (this: Window, ev: MouseEvent) => any
         // If this is a mouse device instead of a touching device
         if (!window.ontouchstart) {
-            windowMouseUp = () => {
-                setMouseDown(false)
-            }
+            windowMouseUp = () => {}
             window.addEventListener('mouseup', windowMouseUp);
         }
         return () => {
@@ -44,23 +41,20 @@ const PureTap: FC<PureTapProps> = ({
         if (window.ontouchstart === undefined) {
             return {
                 onMouseDown: event => {
-                    setMouseDown(true)
                     setIsOn(true)
                 },
                 onMouseUp: event => {
-                    setMouseDown(false)
                     setIsOn(false)
                     action && action()
                 },
                 onMouseLeave: event => {
-                    setMouseDown(false)
                     setIsOn(false)
                 }
             }
         } else {
             return {
                 onTouchStart: event => {
-                    setShouldTriggerAction(true)
+                    shouldTriggerActionRef.current = true
                     setIsOn(true)
                     pointRef.current = [
                         event.touches[0].clientX,
@@ -68,38 +62,42 @@ const PureTap: FC<PureTapProps> = ({
                     ]
                 },
                 onTouchMove: event => {
-                    if (!shouldTriggerAction) return;
+                    if (!shouldTriggerActionRef.current) return;
                     if (direction === 'vertical') {
                         if (event.touches[0].clientY !== pointRef.current![1]) {
-                            setShouldTriggerAction(false);
+                            shouldTriggerActionRef.current = false
                             setIsOn(false)
                             pointRef.current = null
                         }
                     } else if (direction === 'horizontal') {
                         if (event.touches[0].clientX !== pointRef.current![0]) {
-                            setShouldTriggerAction(false)
+                            shouldTriggerActionRef.current = false
                             setIsOn(false)
                             pointRef.current = null
                         }
                     }
                 },
                 onTouchEnd: event => {
-                    if (shouldTriggerAction) {
+                    if (shouldTriggerActionRef.current) {
                         action && action()
                     }
-                    setShouldTriggerAction(false)
+                    shouldTriggerActionRef.current = false
                     setIsOn(false)
                     pointRef.current = null
                 },
                 onTouchCancel: event => {
-                    setShouldTriggerAction(false)
+                    shouldTriggerActionRef.current = false
                     setIsOn(false)
                     pointRef.current = null
                 }
             }
         }
     }
-    const props = { style, className: `${className}${isOn ? ` ${onClassName}` : ''}`, ...handlers() }
+    const props = {
+        style,
+        className: `${className}${isOn ? ` ${onClassName}` : ''}`,
+        ...handlers()
+    }
     return createElement(component, props, children)
 }
 
