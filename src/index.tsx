@@ -1,5 +1,5 @@
 import {
-    useState, useEffect, createElement, FC, CSSProperties, ComponentProps,
+    useState, createElement, FC, CSSProperties, ComponentProps,
     useRef
 } from 'react'
 
@@ -24,19 +24,6 @@ const PureTap: FC<PureTapProps> = ({
     const [isOn, setIsOn] = useState(false)
     const pointRef = useRef<number[] | null>(null)
     const shouldTriggerActionRef = useRef<boolean>(false)
-    useEffect(() => {
-        let windowMouseUp: (this: Window, ev: MouseEvent) => any
-        // If this is a mouse device instead of a touching device
-        if (!window.ontouchstart) {
-            windowMouseUp = () => {}
-            window.addEventListener('mouseup', windowMouseUp);
-        }
-        return () => {
-            if (!window.ontouchstart) {
-                window.removeEventListener('mouseup', windowMouseUp)
-            }
-        }
-    }, [])
     const handlers: () => ComponentProps<"span"> = () => {
         if (window.ontouchstart === undefined) {
             return {
